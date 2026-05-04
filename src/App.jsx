@@ -27,26 +27,29 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleAddProject = (newProject) => {
-    const project = {
-      ...newProject,
-      id: Date.now(),
-    };
-    setProjects([project, ...projects]);
+    newProject.id = Date.now();
+
+    const updatedProjects = [newProject, ...projects];
+
+    setProjects(updatedProjects);
   };
 
   const handleDeleteProject = (id) => {
-    setProjects(projects.filter((project) => project.id !== id));
+    const remainingProjects = projects.filter((project) => project.id !== id);
+
+    setProjects(remainingProjects);
   };
 
-  const handleSearchChange = (query) => {
-    setSearchQuery(query);
-  };
+  const filteredProjects = projects.filter((project) => {
+    const titleMatch = project.title
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    const descriptionMatch = project.description
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
 
-  const filteredProjects = projects.filter(
-    (project) =>
-      project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      project.description.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+    return titleMatch || descriptionMatch;
+  });
 
   return (
     <div className="app-container">
@@ -59,7 +62,7 @@ function App() {
         <div className="search-and-list">
           <SearchBar
             searchQuery={searchQuery}
-            onSearchChange={handleSearchChange}
+            onSearchChange={setSearchQuery}
           />
           <ProjectList
             projects={filteredProjects}

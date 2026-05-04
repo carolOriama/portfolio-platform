@@ -6,9 +6,18 @@ function AddProjectForm({ onAddProject }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!title.trim() || !description.trim()) return;
-    
-    onAddProject({ title, description });
+
+    if (title.trim() === '' || description.trim() === '') {
+      return;
+    }
+
+    const newProject = {
+      title: title,
+      description: description
+    };
+
+    onAddProject(newProject);
+
     setTitle('');
     setDescription('');
   };
@@ -19,19 +28,19 @@ function AddProjectForm({ onAddProject }) {
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="title">Title</label>
-          <input 
-            type="text" 
+          <input
+            type="text"
             id="title"
-            value={title} 
-            onChange={(e) => setTitle(e.target.value)} 
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
         <div className="form-group">
           <label htmlFor="description">Description</label>
-          <textarea 
+          <textarea
             id="description"
-            value={description} 
-            onChange={(e) => setDescription(e.target.value)} 
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
         <button type="submit">Add</button>
